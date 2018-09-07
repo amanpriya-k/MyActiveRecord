@@ -1,0 +1,141 @@
+body {
+  /* font: bold 12px/30px Georgia, serif; */
+  font-family: 'Aclonica';
+  background-color: #FFCF80;
+  font-size: 15px;
+}
+
+h1 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+ul li a, figcaption a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header > img {
+  height: 50px;
+  width: 130px;
+  padding-top: 10px;
+  /* float: left; */
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ingredients-list {
+  /* list-style: square inside; */
+}
+
+/* ol {
+  list-style: upper-roman inside;
+} */
+
+ol { counter-reset: item; }
+ol li { display: block; }
+ol li:before {
+    content: counter(item) ". ";
+    counter-increment: item;
+    color: red;
+}
+
+asul li::before {
+  content: "■  ";
+  display: inline-block;
+  color: red; /* or whatever color you prefer */
+}
+
+.user_review h4 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+input[type="radio"] {
+    -webkit-appearance: none;
+    width: 27px;
+    height: 27px;
+    background-image: url(../assets/stars.png);
+    vertical-align: bottom;
+}
+
+input[type="radio"]:checked {
+  background-position: 30px 30px;
+}
+
+
+input[type="submit"]:last-child {
+    background: gold;
+}
+
+input:last-child:hover {
+    -webkit-filter: brightness(90%);
+}
+
+ol li:nth-of-type(2n) {
+  background-color: #FFDE80;
+  margin: 10px 0;
+}
+
+.center {
+  text-align: center;
+}
+
+h2 + .user_review {
+    border-top: 1px solid black;
+}
+
+nav {
+    /* float: right; */
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav ul li a {
+    padding: 20px;
+    display: block;
+}
+
+body {
+  margin: 0 auto;
+    width: 60%;
+}
+
+aside {
+    display: inline-block;
+}
+
+.ingredients-list li {
+    margin: 15px 0px;
+}
+
+input[type="text"], select {
+    display: block;
+    width: 175px;
+}
+
+select {
+    margin: 10px 0;
+    width: 180px;
+}
+
+textarea {
+    width: 350px;
+}
+
+label {
+    display: block;
+}
+
+figure img {
+  box-shadow: 0 0 0 4px #fff;
+}
