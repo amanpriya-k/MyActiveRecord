@@ -26,7 +26,7 @@ class SQLObject
         attributes[attr_name]
       end
       define_method("#{attr_name}=") do |val|
-        attributes[attr_name.to_sym] = val
+        attributes[attr_name] = val
       end
     end
   end
@@ -55,7 +55,18 @@ class SQLObject
   end
 
   def self.find(id)
-    
+    obj = DBConnection.execute(<<-SQL, id)
+      SELECT
+        *
+      FROM
+        #{table_name}
+      WHERE
+        id = ?
+      LIMIT
+        1
+    SQL
+    return nil if obj.length == 0
+    self.new(obj[0])
   end
 
   def initialize(params = {})
@@ -75,18 +86,58 @@ class SQLObject
   end
 
   def attribute_values
-    # ...
+    cols = self.class.columns
+    cols.map { |attr_name| self.send(attr_name) }[1..-1]
+  end
+
+  # def attribute_str
+  #   "(#{self.attribute_values.join(", ")})"
+  # end
+
+  def col_names
+    cols = self.class.columns[1..-1]
+    "(#{cols.join(", ")})"
+  end
+
+  def q_marks
+    q = []
+    attribute_values.length.times do
+      q << "?"
+    end
+    "(#{q.join(", ")})"
+  end
+
+  def set_for_update
+    cols = self.class.columns[1..-1]
+    cols.map { |col_name| "#{col_name}= ?"}.join(", ")
   end
 
   def insert
-    # ...
+    table_name = self.class.table_name
+    cols = self.col_names
+    DBConnection.execute(<<-SQL, *self.attribute_values)
+      INSERT INTO
+        #{table_name} #{cols}
+      VALUES
+        #{q_marks}
+    SQL
+    self.id = DBConnection.last_insert_row_id
   end
 
   def update
-    # ...
+    # insert unless self.id
+    DBConnection.execute(<<-SQL, *attribute_values, self.id)
+      UPDATE
+        #{self.class.table_name}
+      SET
+        #{set_for_update}
+      WHERE
+        id = ?
+    SQL
   end
 
   def save
-    # ...
+    insert unless self.id
+    update
   end
 end

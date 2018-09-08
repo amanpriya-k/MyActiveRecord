@@ -184,8 +184,15 @@ describe SQLObject do
       it 'returns array of values' do
         cat = Cat.new(id: 123, name: 'cat1', owner_id: 1)
 
-        expect(cat.attribute_values).to eq([123, 'cat1', 1])
+        expect(cat.attribute_values).to eq(['cat1', 1])
       end
+
+      it 'returns string of columns' do
+        cat = Cat.new(id: 123, name: 'cat1', owner_id: 1)
+
+        expect(cat.col_names).to eq("(name, owner_id)")
+      end
+
     end
 
     describe '#insert' do
